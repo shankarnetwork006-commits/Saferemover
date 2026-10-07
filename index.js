@@ -1,0 +1,2 @@
+const {onCall}=require('firebase-functions/v2/https');const admin=require('firebase-admin');admin.initializeApp();
+exports.createCase=onCall(async(request)=>{if(!request.auth)throw new Error('Authentication required');const d=request.data||{};const ref=await admin.firestore().collection('cases').add({uid:request.auth.uid,platform:d.platform||'unknown',url:d.url||'',status:'READY_FOR_REPORT',createdAt:admin.firestore.FieldValue.serverTimestamp()});return{id:ref.id,status:'READY_FOR_REPORT'};});
